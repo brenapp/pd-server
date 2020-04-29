@@ -13,6 +13,9 @@ export interface PlayerState {
 
   guessing: boolean;
   host: boolean;
+
+  active: boolean;
+  id: string;
 }
 
 export type ClientMessagesGlobal =
@@ -51,6 +54,8 @@ export default class Player {
     name: "",
     guessing: false,
     host: false,
+    active: true,
+    id: randomBytes(6).toString("hex"),
   };
 
   constructor() {
@@ -141,6 +146,11 @@ export default class Player {
         this.socket?.ping();
       }, 10 * 1000);
 
+      // Set them to be alive
+      this.setState({
+        active: true,
+      });
+
       // Update them on their player state
       this.socket.send(
         JSON.stringify({
@@ -148,12 +158,22 @@ export default class Player {
           state: this.state,
         })
       );
+
+      // Update the game telling them that
     } else {
       // Stop pinging them
       if (this.heartbeat !== null) clearInterval(this.heartbeat);
 
       // Notice we're not deleting the player from the game, in case they reconnect,
       // the alive property on the player will indicate whether there is a socket currently connected
+      this.setState({
+        active: false,
+      });
+
+      // If the host goes inactive, reassign the host
+      if (this.state.host) {
+        this.game?.reassignHost();
+      }
     }
   }
 
