@@ -34,6 +34,7 @@ export default class Game {
 
     this.players.set(player.state.id, player);
     this.broadcastStates();
+    player.socket?.on("messaage", this.handleMessage);
   }
 
   removePlayer(player: Player) {
@@ -50,6 +51,7 @@ export default class Game {
 
     this.players.delete(player.state.id);
     this.broadcastStates();
+    player.socket?.off("messaage", this.handleMessage);
   }
 
   reassignHost() {
