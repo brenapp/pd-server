@@ -33,6 +33,8 @@ var Player = /** @class */ (function () {
             name: "",
             guessing: false,
             host: false,
+            active: true,
+            id: crypto_1.randomBytes(6).toString("hex"),
         };
         // Handle game joining and leaving
         this.handleMessage = function (data) {
@@ -87,6 +89,7 @@ var Player = /** @class */ (function () {
     };
     Player.prototype.setSocket = function (socket) {
         var _this = this;
+        var _a;
         this.socket = socket;
         if (this.socket !== null) {
             // Set up listeners
@@ -105,11 +108,16 @@ var Player = /** @class */ (function () {
                 _this.alive = false;
                 (_b = _this.socket) === null || _b === void 0 ? void 0 : _b.ping();
             }, 10 * 1000);
+            // Set them to be alive
+            this.setState({
+                active: true,
+            });
             // Update them on their player state
             this.socket.send(JSON.stringify({
                 action: "state-update",
                 state: this.state,
             }));
+            // Update the game telling them that
         }
         else {
             // Stop pinging them
@@ -117,6 +125,13 @@ var Player = /** @class */ (function () {
                 clearInterval(this.heartbeat);
             // Notice we're not deleting the player from the game, in case they reconnect,
             // the alive property on the player will indicate whether there is a socket currently connected
+            this.setState({
+                active: false,
+            });
+            // If the host goes inactive, reassign the host
+            if (this.state.host) {
+                (_a = this.game) === null || _a === void 0 ? void 0 : _a.reassignHost();
+            }
         }
     };
     /**
