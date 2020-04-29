@@ -1,0 +1,22 @@
+{
+  "name": "totpal-server",
+  "version": "0.0.0",
+  "description": "Server for TOTPAL",
+  "main": "out/main.js",
+  "repository": "https://github.com/MayorMonty/totpal-server",
+  "author": "Brendan McGuire",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "@types/ws": "^7.2.4",
+    "ws": "^7.2.3"
+  },
+  "scripts": {
+    "start": "tsc && node out/main.js",
+    "dev": "node ./node_modules/nodemon/bin/nodemon.js"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.2",
+    "nodemon": "^2.0.3"
+  }
+}
