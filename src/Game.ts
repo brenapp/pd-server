@@ -34,24 +34,18 @@ export default class Game {
 
     this.players.set(player.state.id, player);
     this.broadcastStates();
-    player.socket?.on("messaage", this.handleMessage);
+    player.socket?.on("message", this.handleMessage);
   }
 
   removePlayer(player: Player) {
     // If they're the host reassign
     if (player.state.host) {
-      player.setState({
-        host: false,
-      });
-
-      [...this.players.values()][0].setState({
-        host: true,
-      });
+      this.reassignHost();
     }
 
     this.players.delete(player.state.id);
     this.broadcastStates();
-    player.socket?.off("messaage", this.handleMessage);
+    player.socket?.off("message", this.handleMessage);
   }
 
   reassignHost() {
@@ -68,7 +62,7 @@ export default class Game {
 
     // Make the new one (first player who is active and wasn't the previous host)
     for (const [id, player] of this.players) {
-      if (id != oldHost?.state.id && oldHost?.state.active) {
+      if (id != oldHost?.state.id && player.state.active) {
         player.setState({ host: true });
         break;
       }
