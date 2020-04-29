@@ -94,7 +94,7 @@ export default class Game {
     }
   };
 
-  broadcast(data: { broacastType: string; [key: string]: any }) {
+  broadcast(data: { broadcastType: string; [key: string]: any }) {
     for (const [id, player] of this.players) {
       player.socket?.send(JSON.stringify({ action: "broadcast", ...data }));
     }
@@ -104,7 +104,7 @@ export default class Game {
   broadcastStates() {
     const states = [...this.players].map(([id, player]) => player.state);
     this.broadcast({
-      broacastType: "state-update",
+      broadcastType: "state-update",
       states,
     });
   }
