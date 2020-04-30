@@ -16,6 +16,9 @@ export interface PlayerState {
 
   active: boolean;
   id: string;
+
+  // Null for the investigator or when not in a game, true/false for everyone else
+  wordset: boolean | null;
 }
 
 export type ClientMessagesGlobal =
@@ -56,6 +59,7 @@ export default class Player {
     host: false,
     active: true,
     id: randomBytes(6).toString("hex"),
+    wordset: null,
   };
 
   constructor() {
