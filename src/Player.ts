@@ -176,6 +176,7 @@ export default class Player {
 
       // If the host goes inactive, reassign the host
       if (this.state.host) {
+        console.log("Reassign host from player");
         this.game?.reassignHost();
       }
     }
@@ -196,6 +197,10 @@ export default class Player {
     } else {
       this.setState({
         position: "lobby",
+        gameCode: null,
+        host: false,
+        guessing: false,
+        wordset: null,
       });
     }
 
