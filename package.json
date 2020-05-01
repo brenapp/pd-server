@@ -12,7 +12,7 @@
     "ws": "^7.2.3"
   },
   "scripts": {
-    "start": "tsc && node out/main.js",
+    "start": "tsc && node --trace-warnings out/main.js",
     "dev": "node ./node_modules/nodemon/bin/nodemon.js"
   },
   "devDependencies": {
