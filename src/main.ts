@@ -23,7 +23,7 @@ if (process.env["PRODUCTION"]) {
   server = new Server({ server: tls, port: 443 });
 } else {
   server = new Server({
-    port: 443,
+    port: 8888,
   });
 }
 
