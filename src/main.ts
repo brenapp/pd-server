@@ -20,10 +20,10 @@ if (process.env["PRODUCTION"]) {
   );
 
   let tls = https.createServer({ cert, key });
-  server = new Server({ server: tls, port: 8888 });
+  server = new Server({ server: tls, port: 443 });
 } else {
   server = new Server({
-    port: 8888,
+    port: 443,
   });
 }
 
@@ -86,6 +86,6 @@ server.on("connection", (socket, req) => {
 
 server.on("listening", () =>
   console.log(
-    "TOPTAL Server has been started! Listening for connections on port 8888"
+    "TOPTAL Server has been started! Listening for connections on port 443"
   )
 );
