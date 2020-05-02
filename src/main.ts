@@ -5,9 +5,11 @@
 import WebSocket, { Server } from "ws";
 import Game from "./Game";
 import Player from "./Player";
+import https from "https";
+import fs from "fs";
 
 const server = new Server({
-  port: 8888,
+  port: 8080,
 });
 
 type ClientGreetingMessage =
@@ -69,6 +71,6 @@ server.on("connection", (socket, req) => {
 
 server.on("listening", () =>
   console.log(
-    "TOPTAL Server has been started! Listening for connections on port 8888"
+    "TOPTAL Server has been started! Listening for connections on port 8080"
   )
 );
