@@ -8,9 +8,24 @@ import Player from "./Player";
 import https from "https";
 import fs from "fs";
 
-const server = new Server({
-  port: 8080,
-});
+let server;
+
+// If we're on the production server, then we need to use the generated certificates
+if (process.env["PRODUCTION"]) {
+  const cert = fs.readFileSync(
+    "/etc/letsencrypt/live/pd-api.bren.app/cert.pem"
+  );
+  const key = fs.readFileSync(
+    "/etc/letsencrypt/live/pd-api.bren.app/privkey.pem"
+  );
+
+  let tls = https.createServer({ cert, key });
+  server = new Server({ server: tls, port: 8888 });
+} else {
+  server = new Server({
+    port: 8888,
+  });
+}
 
 type ClientGreetingMessage =
   | {
@@ -71,6 +86,6 @@ server.on("connection", (socket, req) => {
 
 server.on("listening", () =>
   console.log(
-    "TOPTAL Server has been started! Listening for connections on port 8080"
+    "TOPTAL Server has been started! Listening for connections on port 8888"
   )
 );
