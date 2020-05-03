@@ -15,9 +15,20 @@ const key = fs.readFileSync(
 
 const server = https.createServer({ cert, key }, function (req, res) {
   res.statusCode = 200;
-  res.setHeader("Content-Type", "text/plain");
+  res.setHeader("Content-Type", "text/html");
 
-  res.write(crypto.randomBytes(20));
+  res.write(`
+  <!Doctype html>
+  <html>
+  <head>
+    <title>Your random content!</title>
+  </head>
+
+  <body>
+    <p>${crypto.randomBytes(40)}</p>
+  </body>
+  </html>
+  `);
   res.end();
 });
 
