@@ -8,34 +8,7 @@ import Player from "./Player";
 import https from "https";
 import fs from "fs";
 
-let server;
-
-// If we're on the production server, then we need to use the generated certificates
-if (process.env["PRODUCTION"]) {
-  const cert = fs.readFileSync(
-    "/etc/letsencrypt/live/pd-api.bren.app/fullchain.pem"
-  );
-  const key = fs.readFileSync(
-    "/etc/letsencrypt/live/pd-api.bren.app/privkey.pem"
-  );
-
-  let tls = https.createServer({ cert, key }, function (req, res) {
-    res.statusCode = 200;
-    res.setHeader("Content-Type", "text/plain");
-
-    res.write("TOTPAL Game servers, connected over HTTPS");
-
-    res.end();
-  });
-
-  tls.listen(8888);
-
-  server = new Server({ server: tls });
-} else {
-  server = new Server({
-    port: 8888,
-  });
-}
+import server from "./server";
 
 server.on("error", console.log);
 

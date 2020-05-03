@@ -18,3 +18,5 @@ const server = https.createServer({ cert, key });
 const wss = new Server({ server });
 
 server.listen(8888);
+
+export default server;
