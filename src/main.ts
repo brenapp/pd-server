@@ -13,7 +13,7 @@ let server;
 // If we're on the production server, then we need to use the generated certificates
 if (process.env["PRODUCTION"]) {
   const cert = fs.readFileSync(
-    "/etc/letsencrypt/live/pd-api.bren.app/cert.pem"
+    "/etc/letsencrypt/live/pd-api.bren.app/fullchain.pem"
   );
   const key = fs.readFileSync(
     "/etc/letsencrypt/live/pd-api.bren.app/privkey.pem"
