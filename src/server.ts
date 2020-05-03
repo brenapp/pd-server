@@ -19,4 +19,4 @@ const wss = new Server({ server });
 
 server.listen(8888);
 
-export default server;
+export default wss;
