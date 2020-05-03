@@ -31,6 +31,9 @@ if (process.env["PRODUCTION"]) {
 
     res.end();
   });
+
+  tls.on("newSession", console.log);
+
   server = new Server({ server: tls, port: 8888 });
 } else {
   server = new Server({
