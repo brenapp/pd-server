@@ -19,7 +19,14 @@ if (process.env["PRODUCTION"]) {
     "/etc/letsencrypt/live/pd-api.bren.app/privkey.pem"
   );
 
-  let tls = https.createServer({ cert, key });
+  let tls = https.createServer({ cert, key }, function (req, res) {
+    res.statusCode = 200;
+    res.setHeader("Content-Type", "text/plain");
+
+    res.write("TOTPAL Game servers, connected over HTTPS");
+
+    res.end();
+  });
   server = new Server({ server: tls, port: 8888 });
 } else {
   server = new Server({
