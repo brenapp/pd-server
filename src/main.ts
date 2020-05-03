@@ -18,12 +18,8 @@ if (process.env["PRODUCTION"]) {
   const key = fs.readFileSync(
     "/etc/letsencrypt/live/pd-api.bren.app/privkey.pem"
   );
-  const ca = fs.readFileSync(
-    "/etc/letsencrypt/live/pd-api.bren.app/chain.pem",
-    "utf8"
-  );
 
-  let tls = https.createServer({ cert, key, ca }, function (req, res) {
+  let tls = https.createServer({ cert, key }, function (req, res) {
     res.statusCode = 200;
     res.setHeader("Content-Type", "text/plain");
 
