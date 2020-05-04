@@ -7,16 +7,22 @@ import fs from "fs";
 import crypto from "crypto";
 import { Server } from "ws";
 
-const cert = fs.readFileSync(
-  "/etc/letsencrypt/live/pd-api.bren.app/fullchain.pem"
-);
-const key = fs.readFileSync(
-  "/etc/letsencrypt/live/pd-api.bren.app/privkey.pem"
-);
+let wss: Server;
 
-const server = https.createServer({ cert, key });
-const wss = new Server({ server });
+if (process.env["DEV"]) {
+  wss = new Server({ port: 8888 });
+} else {
+  const cert = fs.readFileSync(
+    "/etc/letsencrypt/live/pd-api.bren.app/fullchain.pem"
+  );
+  const key = fs.readFileSync(
+    "/etc/letsencrypt/live/pd-api.bren.app/privkey.pem"
+  );
 
-server.listen(8888);
+  const server = https.createServer({ cert, key });
+  wss = new Server({ server });
+
+  server.listen(8888);
+}
 
 export default wss;
