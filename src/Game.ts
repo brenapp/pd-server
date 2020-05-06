@@ -48,6 +48,8 @@ export default class Game {
   words: Map<string, Player> = new Map<string, Player>();
   selectedWord: string | null = null;
 
+  round = 1;
+
   // Keep track of points
   points: { [player: string]: number } = {};
 
@@ -168,15 +170,35 @@ export default class Game {
 
       case "reset-game":
         this.words.clear();
+
+        let prevGuess = false;
         for (const [id, player] of this.players) {
-          player.setState({
-            wordset: false,
-          });
+          if (prevGuess) {
+            player.setState({
+              guessing: true,
+              wordset: false,
+            });
+            prevGuess = false;
+          } else {
+            if (player.state.guessing) {
+              prevGuess = true;
+            }
+
+            player.setState({
+              wordset: false,
+              guessing: false,
+            });
+          }
         }
+
+        // Next round
+        this.round++;
+
         this.selectedWord = null;
 
         this.broadcast({
           broadcastType: "game-reset",
+          round: this.round,
         });
         this.broadcastStates();
 
@@ -221,6 +243,7 @@ export default class Game {
     this.broadcast({
       broadcastType: "guess-result",
       correct,
+      truth: this.words.get(this.selectedWord as string)?.state.name,
       points: this.points,
     });
 
@@ -243,6 +266,7 @@ export default class Game {
       // Game state
       selectedWord: this.selectedWord,
       points: this.points,
+      round: this.round,
     });
   }
 }
