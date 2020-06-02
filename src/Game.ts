@@ -243,6 +243,7 @@ export default class Game {
     this.broadcast({
       broadcastType: "guess-result",
       correct,
+      guess: this.players.get(guess)?.state.name,
       truth: this.words.get(this.selectedWord as string)?.state.name,
       points: this.points,
     });
