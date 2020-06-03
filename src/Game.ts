@@ -38,7 +38,8 @@ type ClientMessagesGameAll =
     };
 
 export default class Game {
-  code = randomBytes(2).toString("hex").toUpperCase();
+  // Random 4-digit number
+  code = Math.floor(1000 + Math.random() * 9000);
   static instances = new Map<string, Game>();
 
   players: Map<string, Player> = new Map<string, Player>();
