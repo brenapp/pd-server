@@ -171,24 +171,14 @@ export default class Game {
       case "reset-game":
         this.words.clear();
 
-        let prevGuess = false;
-        for (const [id, player] of this.players) {
-          if (prevGuess) {
-            player.setState({
-              guessing: true,
-              wordset: false,
-            });
-            prevGuess = false;
-          } else {
-            if (player.state.guessing) {
-              prevGuess = true;
-            }
+        // Cycle through who's guessing
+        const players = [...this.players.values()];
 
-            player.setState({
-              wordset: false,
-              guessing: false,
-            });
-          }
+        for (const [i, player] of Object.entries(players)) {
+          player.setState({
+            wordset: false,
+            guessing: this.round % players.length === +i,
+          });
         }
 
         // Next round
