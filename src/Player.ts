@@ -67,6 +67,10 @@ export default class Player {
     Player.instances.set(this.session, this);
   }
 
+  send(data: object) {
+    return this.socket?.send(JSON.stringify(data));
+  }
+
   // Handle game joining and leaving
   handleMessage = (data: WebSocket.Data) => {
     const message: ClientMessagesGlobal = JSON.parse(data.toString());
@@ -84,12 +88,10 @@ export default class Player {
         if (game) {
           this.setGame(game);
         } else {
-          this.socket?.send(
-            JSON.stringify({
-              "error-when": "join",
-              error: "A game with that code does not exist",
-            })
-          );
+          this.send({
+            "error-when": "join",
+            error: "A game with that code does not exist",
+          });
         }
 
         break;
@@ -104,7 +106,6 @@ export default class Player {
 
       case "create": {
         const game = new Game();
-        game.addPlayer(this);
 
         this.setGame(game);
       }
@@ -115,12 +116,10 @@ export default class Player {
     // Progressively update state (like react does)
     this.state = { ...this.state, ...state };
 
-    this.socket?.send(
-      JSON.stringify({
-        action: "state-update",
-        state: this.state,
-      })
-    );
+    this.send({
+      action: "state-update",
+      state: this.state,
+    });
 
     // Tell the game (if connected) to broadcast the new state to everyone
     this.game?.broadcastStates();
@@ -156,12 +155,10 @@ export default class Player {
       });
 
       // Update them on their player state
-      this.socket.send(
-        JSON.stringify({
-          action: "state-update",
-          state: this.state,
-        })
-      );
+      this.send({
+        action: "state-update",
+        state: this.state,
+      });
 
       // Update the game telling them that
     } else {
