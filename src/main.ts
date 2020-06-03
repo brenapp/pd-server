@@ -64,6 +64,8 @@ server.on("connection", (socket, req) => {
       })
     );
 
+    console.log(`ESTABLISH ${player.session}`);
+
     // Set the player
     player.setSocket(socket);
   });
